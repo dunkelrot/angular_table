@@ -1,0 +1,25 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}
+
+.mat-button-base {
+  margin: 0px 0px 8px 8px;
+}
+
+.tc-action-buttons {
+  margin-top: 2em;
+}
+
+.tc_selected {
+  background-color: rgb(255, 157, 157);
+}

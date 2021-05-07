@@ -1,0 +1,61 @@
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Name" #input />
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td (click)='onSelect(row, "name")' (dblclick)='onSelectAll("name", row.getProperty("name").selected)'
+        [ngClass]="{tc_selected: row.isPropSelected('name')}" mat-cell *matCellDef="let row">
+        {{row.getPropertyValue('name')}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>DN</th>
+      <td (click)='onSelect(row, "dn")' (dblclick)='onSelectAll("dn", row.getProperty("dn").selected)'
+        [ngClass]="{tc_selected: row.isPropSelected('dn')}" mat-cell *matCellDef="let row">
+        {{row.getPropertyValue('dn')}} {{row.getPropertyUnit('dn')}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rkz">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>RKZ</th>
+      <td [ngClass]="{tc_selected: row.isPropSelected('rkz')}" mat-cell (click)='onSelect(row, "rkz")'
+        (dblclick)='onSelectAll("rkz", row.getProperty("rkz").selected)' *matCellDef="let row">
+        {{row.getPropertyValue('rkz')}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pressure">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Pressure</th>
+      <td [ngClass]="{tc_selected: row.isPropSelected('pressure')}" mat-cell (click)='onSelect(row, "pressure")'
+        (dblclick)='onSelectAll("pressure", row.getProperty("pressure").selected)' *matCellDef="let row">
+        {{row.getPropertyValue('pressure')}} {{row.getPropertyUnit('pressure')}}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">
+        No data matching the filter "{{input.value}}"
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+</div>
+
+<div class="tc-action-buttons">
+  <button color="primary" (click)="onEdit()" mat-flat-button>Edit</button>
+  <button color="primary" (click)="onClearSelection()" mat-flat-button>
+    Clear
+  </button>
+</div>
+

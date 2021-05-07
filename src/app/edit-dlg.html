@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Edit pipe property</h1>
+<div mat-dialog-content>
+  <p>Editing will change ALL selected values!</p>
+
+  <div *ngFor="let propValue of data.propValueList">
+    <mat-form-field class="tc-full-width">
+      <mat-label>{{propValue.name}}</mat-label>
+      <input cdkFocusInitial matInput [(ngModel)]="propValue.value" />
+      <span matSuffix>{{propValue.unit}}</span>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="primary"
+    [mat-dialog-close]="data.propValueList"
+  >
+    Ok
+  </button>
+  <button mat-flat-button (click)="onNoClick()">Cancel</button>
+</div>
