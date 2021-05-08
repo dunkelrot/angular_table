@@ -7,33 +7,49 @@
   <table mat-table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td (click)='onSelect(row, "name")' (dblclick)='onSelectAll("name", row.getProperty("name").selected)'
+      <td [satPopoverAnchor]="name" (click)="name.toggle()" (dblclick)='onSelectAll("name", row.getProperty("name").selected)'
         [ngClass]="{tc_selected: row.isPropSelected('name')}" mat-cell (mouseenter)='onSelectMouseEnter(row,"name", $event)' *matCellDef="let row">
         {{row.getPropertyValue('name')}}
+        <sat-popover #name [hasBackdrop]="true"
+        (closed)="onUpdate(row, 'name', $event)">
+          <inline-edit [propName]='"name"' [pipeName]='row.getProperty("name").value' [value]='row.getProperty("name").value'></inline-edit>
+        </sat-popover>        
       </td>
     </ng-container>
 
     <ng-container matColumnDef="dn">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>DN</th>
-      <td (click)='onSelect(row, "dn")' (dblclick)='onSelectAll("dn", row.getProperty("dn").selected)'
+      <td [satPopoverAnchor]="dn" (click)="dn.toggle()" (dblclick)='onSelectAll("dn", row.getProperty("dn").selected)'
         [ngClass]="{tc_selected: row.isPropSelected('dn')}" mat-cell (mouseenter)='onSelectMouseEnter(row,"dn", $event)' *matCellDef="let row">
         {{row.getPropertyValue('dn')}} {{row.getPropertyUnit('dn')}}
+        <sat-popover #dn [hasBackdrop]="true"
+        (closed)="onUpdate(row, 'dn', $event)">
+          <inline-edit [propName]='"dn"' [pipeName]='row.getProperty("name").value' [value]='row.getProperty("dn").value'></inline-edit>
+        </sat-popover>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="rkz">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>RKZ</th>
-      <td [ngClass]="{tc_selected: row.isPropSelected('rkz')}" mat-cell (click)='onSelect(row, "rkz")'
+      <td [satPopoverAnchor]="rkz" (click)="rkz.toggle()" [ngClass]="{tc_selected: row.isPropSelected('rkz')}" mat-cell 
         (dblclick)='onSelectAll("rkz", row.getProperty("rkz").selected)' (mouseenter)='onSelectMouseEnter(row,"rkz", $event)' *matCellDef="let row">
         {{row.getPropertyValue('rkz')}}
+        <sat-popover #rkz [hasBackdrop]="true"
+        (closed)="onUpdate(row, 'rkz', $event)">
+          <inline-edit [propName]='"rkz"' [pipeName]='row.getProperty("name").value' [value]='row.getProperty("rkz").value'></inline-edit>
+        </sat-popover>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="pressure">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Pressure</th>
-      <td [ngClass]="{tc_selected: row.isPropSelected('pressure')}" mat-cell (click)='onSelect(row, "pressure")'
+      <td [satPopoverAnchor]="pressure" (click)="pressure.toggle()" [ngClass]="{tc_selected: row.isPropSelected('pressure')}" mat-cell
         (dblclick)='onSelectAll("pressure", row.getProperty("pressure").selected)' (mouseenter)='onSelectMouseEnter(row,"pressure", $event)' *matCellDef="let row">
         {{row.getPropertyValue('pressure')}} {{row.getPropertyUnit('pressure')}}
+        <sat-popover #pressure [hasBackdrop]="true"
+        (closed)="onUpdate(row, 'pressure', $event)">
+          <inline-edit [propName]='"pressure"' [pipeName]='row.getProperty("name").value' [value]='row.getProperty("pressure").value'></inline-edit>
+        </sat-popover>
       </td>
     </ng-container>
 

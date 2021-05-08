@@ -20,8 +20,6 @@ function removeFromArray<T, M>(
   });
   if (index !== -1) {
     array.splice(index, 1);
-  } else {
-    console.log("NO REMOVED");
   }
 }
 

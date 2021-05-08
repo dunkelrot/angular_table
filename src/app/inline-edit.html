@@ -1,0 +1,13 @@
+<form (ngSubmit)="onSubmit()">
+    <div class="mat-subheading-2">Change {{propName}} of {{pipeName}}</div>
+    
+    <mat-form-field>
+      <input matInput maxLength="200" name="val" [(ngModel)]="val">
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-flat-button type="button" color="" (click)="onCancel()">CANCEL</button>
+      <button mat-flat-button type="submit" color="primary">SAVE</button>
+    </div>
+  </form>
+  

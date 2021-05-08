@@ -1,0 +1,1 @@
+Test how an Agular table can be use to support editing multpile entries at once.

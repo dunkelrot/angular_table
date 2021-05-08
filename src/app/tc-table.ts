@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { pipe } from 'rxjs';
 import { EditDialog } from './edit-dlg';
 import { PipeData, PipeProperty } from './model';
 import { PropSelection } from './selection';
@@ -93,6 +94,10 @@ export class TcTable implements AfterViewInit {
     }
   }
 
+  onEditInPlace(pipeData: PipeData, propName: string, event: Event) {
+    event.target
+  }
+
   onEdit() {
     if (this.selection.count() > 0) {
       const propTypes = this.selection.getPropTypes();
@@ -119,6 +124,11 @@ export class TcTable implements AfterViewInit {
 
   onClearSelection() {
     this.selection.clear();
+  }
+
+  onUpdate(pipeData: PipeData, propName: string, value: string) {
+    if (value == null) { return; }
+    pipeData.setProperty(propName, value);
   }
 }
 
