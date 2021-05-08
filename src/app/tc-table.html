@@ -8,7 +8,7 @@
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
       <td (click)='onSelect(row, "name")' (dblclick)='onSelectAll("name", row.getProperty("name").selected)'
-        [ngClass]="{tc_selected: row.isPropSelected('name')}" mat-cell *matCellDef="let row">
+        [ngClass]="{tc_selected: row.isPropSelected('name')}" mat-cell (mouseenter)='onSelectMouseEnter(row,"name", $event)' *matCellDef="let row">
         {{row.getPropertyValue('name')}}
       </td>
     </ng-container>
@@ -16,7 +16,7 @@
     <ng-container matColumnDef="dn">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>DN</th>
       <td (click)='onSelect(row, "dn")' (dblclick)='onSelectAll("dn", row.getProperty("dn").selected)'
-        [ngClass]="{tc_selected: row.isPropSelected('dn')}" mat-cell *matCellDef="let row">
+        [ngClass]="{tc_selected: row.isPropSelected('dn')}" mat-cell (mouseenter)='onSelectMouseEnter(row,"dn", $event)' *matCellDef="let row">
         {{row.getPropertyValue('dn')}} {{row.getPropertyUnit('dn')}}
       </td>
     </ng-container>
@@ -24,7 +24,7 @@
     <ng-container matColumnDef="rkz">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>RKZ</th>
       <td [ngClass]="{tc_selected: row.isPropSelected('rkz')}" mat-cell (click)='onSelect(row, "rkz")'
-        (dblclick)='onSelectAll("rkz", row.getProperty("rkz").selected)' *matCellDef="let row">
+        (dblclick)='onSelectAll("rkz", row.getProperty("rkz").selected)' (mouseenter)='onSelectMouseEnter(row,"rkz", $event)' *matCellDef="let row">
         {{row.getPropertyValue('rkz')}}
       </td>
     </ng-container>
@@ -32,7 +32,7 @@
     <ng-container matColumnDef="pressure">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Pressure</th>
       <td [ngClass]="{tc_selected: row.isPropSelected('pressure')}" mat-cell (click)='onSelect(row, "pressure")'
-        (dblclick)='onSelectAll("pressure", row.getProperty("pressure").selected)' *matCellDef="let row">
+        (dblclick)='onSelectAll("pressure", row.getProperty("pressure").selected)' (mouseenter)='onSelectMouseEnter(row,"pressure", $event)' *matCellDef="let row">
         {{row.getPropertyValue('pressure')}} {{row.getPropertyUnit('pressure')}}
       </td>
     </ng-container>
@@ -53,8 +53,8 @@
 </div>
 
 <div class="tc-action-buttons">
-  <button color="primary" (click)="onEdit()" mat-flat-button>Edit</button>
-  <button color="primary" (click)="onClearSelection()" mat-flat-button>
+  <button color="primary" (click)="onEdit()" [disabled]="selection.count() == 0" mat-flat-button>Edit</button>
+  <button color="primary" (click)="onClearSelection()" [disabled]="selection.count() == 0" mat-flat-button>
     Clear
   </button>
 </div>

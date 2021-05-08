@@ -20,6 +20,8 @@ function removeFromArray<T, M>(
   });
   if (index !== -1) {
     array.splice(index, 1);
+  } else {
+    console.log("NO REMOVED");
   }
 }
 
@@ -30,18 +32,6 @@ interface ISelectMod<T, U> {
 export class PropSelection {
   selectedProps: Map<string, PipeProperty[]> = new Map();
 
-  selectProperties(properties: PipeProperty[], flag: boolean) {
-    if (flag) {
-      properties.forEach(prop => {
-        this.addToSelection(prop);
-      });
-    } else {
-      properties.forEach(prop => {
-        this.removeFromSelection(prop);
-      });
-    }
-  }
-
   selectProperty(property: PipeProperty, flag: boolean) {
     if (!flag) {
       this.removeFromSelection(property);
@@ -50,29 +40,35 @@ export class PropSelection {
     }
   }
 
-  toggleProperty(property: PipeProperty) {
-    if (property.selected) {
-      this.removeFromSelection(property);
-    } else {
-      this.addToSelection(property);
-    }
-  }
-
-  removeFromSelection(property: PipeProperty) {
-    property.selected = false;
-    removeFromArray(this.selectedProps.get(property.name), property, (a, b) => {
-      return a === b;
+  selectProperties(properties: PipeProperty[], flag: boolean) {
+    properties.forEach(prop => {
+      this.selectProperty(prop, flag);
     });
   }
 
-  addToSelection(property: PipeProperty) {
-    property.selected = true;
-    let propList = this.selectedProps.get(property.name);
-    if (propList === undefined) {
-      propList = new Array<PipeProperty>();
-      this.selectedProps.set(property.name, propList);
+  toggleProperty(property: PipeProperty) {
+    this.selectProperty(property, !property.selected)
+  }
+
+  removeFromSelection(property: PipeProperty) {
+    if (property.selected) {
+      property.selected = false;
+      removeFromArray(this.selectedProps.get(property.name), property, (a, b) => {
+        return a === b;
+      });
     }
-    propList.push(property);
+  }
+
+  addToSelection(property: PipeProperty) {
+    if (!property.selected) {
+      property.selected = true;
+      let propList = this.selectedProps.get(property.name);
+      if (propList === undefined) {
+        propList = new Array<PipeProperty>();
+        this.selectedProps.set(property.name, propList);
+      }
+      propList.push(property);
+    }
   }
 
   countPropNames() {

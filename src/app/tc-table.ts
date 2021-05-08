@@ -7,9 +7,15 @@ import { EditDialog } from './edit-dlg';
 import { PipeData, PipeProperty } from './model';
 import { PropSelection } from './selection';
 
+function shortToPropName(name: string): string {
+  let result = name;
+  if (name === 'pn') {
+    result = 'pressure';
+  }
+  return result;
+}
 
 /**
- * @title Data table with sorting, pagination, and filtering.
  */
 @Component({
   selector: 'tc-table',
@@ -27,16 +33,26 @@ export class TcTable implements AfterViewInit {
 
   constructor(public dialog: MatDialog) {
     // Create 50 pipes
-    const users = Array.from({ length: 50 }, (_, k) => createNewPipe(k + 1));
+    const pipes = Array.from({ length: 25 }, (_, k) => createNewPipe(k + 1));
 
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    this.dataSource = new MatTableDataSource(pipes);
     this.dataSource.filterPredicate = (
       data: PipeData,
       value: string
     ): boolean => {
-      return data.getPropertyValue('name').search(value) != -1;
+      const tokens = value.split('=');
+      if (tokens.length === 1) {
+        return data.getPropertyValue('name').search(value) != -1;
+      } else {
+        return data.getPropertyValue(shortToPropName(tokens[0])).search(tokens[1]) != -1;
+      }
     };
+    this.dataSource.sortingDataAccessor = (
+      data: PipeData, id: string
+    ) => {
+      return data.getPropertyValue(id);
+    }
   }
 
   ngAfterViewInit() {
@@ -47,7 +63,6 @@ export class TcTable implements AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -58,10 +73,24 @@ export class TcTable implements AfterViewInit {
   }
 
   onSelectAll(propName: string, flag: boolean) {
-    this.dataSource.filteredData.forEach(pipeData => {
+    const startIndex = this.dataSource.paginator.pageIndex * this.dataSource.paginator.pageSize;
+    
+    let endIndex = this.dataSource.paginator.pageIndex * this.dataSource.paginator.pageSize + this.dataSource.paginator.pageSize;
+    endIndex = endIndex > this.dataSource.filteredData.length ? this.dataSource.filteredData.length : endIndex;
+
+    for (var index = startIndex; index < endIndex; index++) {
+      const pipeData = this.dataSource.filteredData[index];
       const prop = pipeData.getProperty(propName);
-      this.selection.selectProperty(prop, !flag);
-    });
+      this.selection.selectProperty(prop, !prop.selected);
+    };
+  }
+
+  onSelectMouseEnter(pipeData: PipeData, propName: string, event: MouseEvent) {
+    if (event.ctrlKey) {
+      this.selection.selectProperty(pipeData.getProperty(propName), true);
+    } else if (event.shiftKey) {
+      this.selection.selectProperty(pipeData.getProperty(propName), false);
+    }
   }
 
   onEdit() {
